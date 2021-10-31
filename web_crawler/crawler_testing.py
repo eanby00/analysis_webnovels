@@ -27,6 +27,7 @@ for i in range(len(li_list_author)):
 
 # 시간차주기: 
 rand_value = random.randint(1, 5)
+# print("rand_value:", rand_value)
 time.sleep(rand_value)
 
 # 해당 데이터들을 DataFrame으로 저장하고 csv로 저장
@@ -35,6 +36,9 @@ df.to_csv(file_name, encoding="utf-8")
 
 # vm내에 저장된 csv파일을 hdfs의 maria_dev 아래에 저장
 hdfs_path = os.path.join(os.sep, "user", "maria_dev", file_name)
+# test_path = os.path.join(os.sep, "user", "maria_dev", "test", file_name)
+# print("hdfs_path:", hdfs_path)
+# print("test_path", test_path)
 put = Popen(["hadoop", "fs", "-put", file_name, hdfs_path], stdin=PIPE, bufsize=-1)
 put.communicate()
 
