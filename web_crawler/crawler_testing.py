@@ -36,15 +36,10 @@ df.to_csv(file_name, encoding="utf-8")
 
 # vm내에 저장된 csv파일을 hdfs의 maria_dev 아래에 저장
 hdfs_path = os.path.join(os.sep, "user", "maria_dev", file_name)
-# test_path = os.path.join(os.sep, "user", "maria_dev", "test", file_name)
+test_path = os.path.join(os.sep, "user", "maria_dev", "test", file_name)
 # print("hdfs_path:", hdfs_path)
 # print("test_path", test_path)
-put = Popen(["hadoop", "fs", "-put", file_name, hdfs_path], stdin=PIPE, bufsize=-1)
+put1 = Popen(["hadoop", "fs", "-mkdir", "test"])
+put1.communicate()
+put = Popen(["hadoop", "fs", "-put", file_name, test_path], stdin=PIPE, bufsize=-1)
 put.communicate()
-
-## 참고출처
-# vm내의 csv 파일을 hdfs로 전송: https://stackoverflow.com/questions/26606128/how-to-save-a-file-in-hadoop-with-python
-# requests와 beautifulsoup4를 이용해 웹 크롤링하기: https://beomi.github.io/gb-crawling/posts/2017-01-20-HowToMakeWebCrawler.html
-# 크롤링 차단 방지
-    # 크롤링 header 지정: https://blog.naver.com/kiddwannabe/221185808375
-    # 크롤링에 시간차주기: https://advenoh.tistory.com/3
