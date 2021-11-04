@@ -1,7 +1,8 @@
 참고출처
-vm내의 csv 파일을 hdfs로 전송: https://stackoverflow.com/questions/26606128/how-to-save-a-file-in-hadoop-with-python
-requests와 beautifulsoup4를 이용해 웹 크롤링하기: https://beomi.github.io/gb-crawling/posts/2017-01-20-HowToMakeWebCrawler.html
+vm내의 csv 파일을 hdfs로 전송(): https://stackoverflow.com/questions/26606128/how-to-save-a-file-in-hadoop-with-python
+requests와 beautifulsoup4를 이용해 웹 크롤링하기(기본 정보): https://beomi.github.io/gb-crawling/posts/2017-01-20-HowToMakeWebCrawler.html
 
 크롤링 차단 방지
     크롤링 header 지정: https://blog.naver.com/kiddwannabe/221185808375
     크롤링에 시간차주기: https://advenoh.tistory.com/3
+        차이점: random()을 이용해서 0~2 초 사이의 딜레이를 줌
