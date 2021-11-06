@@ -18,7 +18,7 @@ def parseIntremove(num_string):
 version_main = 1
 
 # 초기화
-url_inner = "https://novel.munpia.com/259775/page/"
+url_inner = "https://novel.munpia.com/290376/page/"
 inner_index = 1
 id = 0
 main_id = []
@@ -93,7 +93,6 @@ while True:
                 inner_target.append(True)
 
             inner_purchase.append(parseInt(temp_soup[i].select_one("td:nth-of-type(5)").string))
-
             inner_recommendation.append(parseInt(temp_soup[i].select_one("td:nth-of-type(6) span").string))
             inner_letter.append(parseIntremove(temp_soup[i].select_one("td:nth-of-type(7)").string))
 
