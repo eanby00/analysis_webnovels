@@ -16,6 +16,7 @@ author = u"켄치"
 
 comment_main_id = []
 comment_unit_serial = []
+comment_version = []
 comment_commenter = []
 comment_content = []
 comment_isauth = []
@@ -28,6 +29,7 @@ li_list_content = soup_comment.select("ul.comments div p:nth-child(1)")
 for comment_index in range(len(li_list_commenter)):
     comment_main_id.append(main_id)
     comment_unit_serial.append(unit_serial)
+    comment_version.append(version_main)
     comment_commenter.append(li_list_commenter[comment_index].string)
     comment_content.append(li_list_content[comment_index].getText())
     comment_isauth.append(author == comment_commenter[comment_index].string)
@@ -35,6 +37,7 @@ for comment_index in range(len(li_list_commenter)):
 df_comment = pd.DataFrame({
     "book_id": comment_main_id,
     "unit_serial":comment_unit_serial,
+    "version": comment_version,
     "commenter":comment_commenter,
     "content":comment_content,
     "isauth":comment_isauth
