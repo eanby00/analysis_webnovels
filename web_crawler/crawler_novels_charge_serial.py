@@ -13,35 +13,10 @@ version_main = 1
 
 # 초기화
 url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/exclusive/1/gpage/"
-file_novel_list = "munpia_novel_list_charge_serial_"+str(version_main)+".csv"
-
 
 ## index
 index_charged = 1
 index_work = 0
-
-## DataFrame 내부 데이터 - 작품 기본
-id = [] # 작품 id, 해당 version에서만 의미가 있음 
-author = [] # 작가
-title = [] # 타이틀
-link = [] # 작품 link
-version = [] # 데이터를 수집한 version
-source = [] # 문피아 유료인가? 문피아 무료인가?, 해당 코드에서는 모두 "문피아_유료"로 통일
-ending = [] # 연재작품인가? 완결작품인가?, 해당 코드에서는 모두 "연재작"으로 통일
-
-## DataFrame 내부 데이터 - 작품 상세
-avg_serial_week = [] # 주당 평균 연재 횟수
-serial_start = [] # 연재 시작 날짜
-serial_last = [] # 최근 연재 날짜
-serial_time = [] # 총 연재 횟수
-view = [] # 조회 횟수
-recommendation = [] # 추천 횟수
-letter = [] # 글자 수
-favorite = [] # 해당 작품을 선호하는 독자 인원
-
-## 추가 데이터
-period = [] # 일 기준의 연재 기간, 최근 연재 날짜 - 연재 시작 날짜
-check_count = [] # 작품 당 기준 값 이상 감소한 편의 갯수, 해당 코드에서는 모두 0으로 통일
 
 ## index 체크용
 prev_author_charged = ""
@@ -65,6 +40,30 @@ def parseIntremove(num_string):
 
 # 문피아 유료 데이터 수집
 while True:
+    file_novel_list = "munpia_novel_list_charge_serial_"+str(version_main)+"_"+str(index_charged)+".csv"
+    ## DataFrame 내부 데이터 - 작품 기본
+    id = [] # 작품 id, 해당 version에서만 의미가 있음 
+    author = [] # 작가
+    title = [] # 타이틀
+    link = [] # 작품 link
+    version = [] # 데이터를 수집한 version
+    source = [] # 문피아 유료인가? 문피아 무료인가?, 해당 코드에서는 모두 "문피아_유료"로 통일
+    ending = [] # 연재작품인가? 완결작품인가?, 해당 코드에서는 모두 "연재작"으로 통일
+
+    ## DataFrame 내부 데이터 - 작품 상세
+    avg_serial_week = [] # 주당 평균 연재 횟수
+    serial_start = [] # 연재 시작 날짜
+    serial_last = [] # 최근 연재 날짜
+    serial_time = [] # 총 연재 횟수
+    view = [] # 조회 횟수
+    recommendation = [] # 추천 횟수
+    letter = [] # 글자 수
+    favorite = [] # 해당 작품을 선호하는 독자 인원
+
+    ## 추가 데이터
+    period = [] # 일 기준의 연재 기간, 최근 연재 날짜 - 연재 시작 날짜
+    check_count = [] # 작품 당 기준 값 이상 감소한 편의 갯수, 해당 코드에서는 모두 0으로 통일
+
     # 해당 url에서 데이터 가져오기
     req = requests.get(url_charged+str(index_charged), headers={'User-Agent': 'Mozilla/5.0'})
     soup = BeautifulSoup(req.text, "html.parser")
@@ -80,7 +79,7 @@ while True:
         print("completion", index_charged)
         break
 
-    # 데이터 가져오기
+    # 내부 데이터 가져오기 -------------------------------------------------------------------------------------------------------------------------------------------
     for i in range(len(li_list_author)):
         # 작품 데이터 가져오기
         id.append(index_work)
@@ -122,7 +121,7 @@ while True:
         rand_value = random() * 2
         time.sleep(rand_value)
 
-        # 작품의 편당 데이터 가져오기
+        # 작품의 편당 데이터 가져오기 -------------------------------------------------------------------------------------------------------------------------------------------
         # 편당 정보 데이터
         main_id = [] # 작품의 id
         inner_version = [] # 데이터를 수집한 version
@@ -295,11 +294,13 @@ while True:
         put_unit = Popen(["hadoop", "fs", "-put", file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
         put_unit.communicate()
 
+        # 편당 데이터 완료 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         # 정보 변경
         index_work += 1
 
         # 진행률 체크
-        print(index_charged, "progress:", i)
+        print(index_charged, "progress:", index_work)
 
     # 기본 정보 변경
     print("progress:", index_charged, "done")
@@ -309,55 +310,55 @@ while True:
 
     time.sleep(5)
 
-# 해당 데이터들을 DataFrame으로 저장
-df_list = pd.DataFrame({
-    "id":id,
-    "author":author,
-    "title":title,
-    "link":link,
-    "version":version,
-    "source":source,
-    "ending": ending,
-    "check_count":check_count,
-    "avg_serial_week":avg_serial_week,
-    "serial_start": serial_start,
-    "serial_last":serial_last,
-    "period": period,
-    "serial_time":serial_time,
-    "view":view,
-    "recommendation":recommendation,
-    "letter":letter,
-    "favorite":favorite})
+    # 해당 데이터들을 DataFrame으로 저장
+    df_list = pd.DataFrame({
+        "id":id,
+        "author":author,
+        "title":title,
+        "link":link,
+        "version":version,
+        "source":source,
+        "ending": ending,
+        "check_count":check_count,
+        "avg_serial_week":avg_serial_week,
+        "serial_start": serial_start,
+        "serial_last":serial_last,
+        "period": period,
+        "serial_time":serial_time,
+        "view":view,
+        "recommendation":recommendation,
+        "letter":letter,
+        "favorite":favorite})
 
-# 데이터프레임에 추가 데이터 삽입
-# view_per_date 하루별 평균 조회수, view / period
-# recommendation_per_date 하루별 평균 추천수, recommendation / period
-# letter_per_date 하루별 평균 글자수, letter / period
-# favorite_per_date 하루별 평균 선호자수, favorite / period
-# 
-# view_per_serial 편당 평균 조회수, view / serial_time
-# recommendation_per_serial 편당 평균 조회수, recommendation / serial_time
-# letter_per_serial 편당 평균 조회수, letter / serial_time
-# favorite_per_serial 편당 평균 조회수, favorite / serial_time
+    # 데이터프레임에 추가 데이터 삽입
+    # view_per_date 하루별 평균 조회수, view / period
+    # recommendation_per_date 하루별 평균 추천수, recommendation / period
+    # letter_per_date 하루별 평균 글자수, letter / period
+    # favorite_per_date 하루별 평균 선호자수, favorite / period
+    # 
+    # view_per_serial 편당 평균 조회수, view / serial_time
+    # recommendation_per_serial 편당 평균 조회수, recommendation / serial_time
+    # letter_per_serial 편당 평균 조회수, letter / serial_time
+    # favorite_per_serial 편당 평균 조회수, favorite / serial_time
 
-df_list["view_per_date"] = df_list["view"] / df_list["period"]
-df_list["recommendation_per_date"] = df_list["recommendation"] / df_list["period"]
-df_list["letter_per_date"] = df_list["letter"] / df_list["period"]
-df_list["favorite_per_date"] = df_list["favorite"] / df_list["period"]
+    df_list["view_per_date"] = df_list["view"] / df_list["period"]
+    df_list["recommendation_per_date"] = df_list["recommendation"] / df_list["period"]
+    df_list["letter_per_date"] = df_list["letter"] / df_list["period"]
+    df_list["favorite_per_date"] = df_list["favorite"] / df_list["period"]
 
-df_list["view_per_serial"] = df_list["view"] / df_list["serial_time"]
-df_list["recommendation_per_serial"] = df_list["recommendation"] / df_list["serial_time"]
-df_list["letter_per_serial"] = df_list["letter"] / df_list["serial_time"]
-df_list["favorite_per_serial"] = df_list["favorite"] / df_list["serial_time"]
+    df_list["view_per_serial"] = df_list["view"] / df_list["serial_time"]
+    df_list["recommendation_per_serial"] = df_list["recommendation"] / df_list["serial_time"]
+    df_list["letter_per_serial"] = df_list["letter"] / df_list["serial_time"]
+    df_list["favorite_per_serial"] = df_list["favorite"] / df_list["serial_time"]
 
-# 데이터프레임 csv로 저장
-df_list.to_csv(file_novel_list, encoding="utf-8", index=None)
+    # 데이터프레임 csv로 저장
+    df_list.to_csv(file_novel_list, encoding="utf-8", index=None)
 
-# vm내에 저장된 csv파일을 hdfs의 maria_dev/analysis_webnovels 아래에 저장
-hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", file_novel_list)
+    # vm내에 저장된 csv파일을 hdfs의 maria_dev/analysis_webnovels 아래에 저장
+    hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", file_novel_list)
 
-# 소설 리스트를 analysis_webnovels/novel_list에 저장
-put = Popen(["hadoop", "fs", "-put", file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)
-put.communicate()
+    # 소설 리스트를 analysis_webnovels/novel_list에 저장
+    put = Popen(["hadoop", "fs", "-put", file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)
+    put.communicate()
 
 print("done")
