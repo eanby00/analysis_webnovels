@@ -216,7 +216,10 @@ while True:
                     # 작품 데이터 가져오기
                         main_id.append(index_work)
                         inner_version.append(version_main)
-                        inner_serial.append(parseInt(temp_soup[j].select_one("td.index > span").string))
+                        try:
+                            inner_serial.append(parseInt(temp_soup[j].select_one("td.index > span").string))
+                        except:
+                            inner_serial.append(None)
 
                         if temp_soup[j].select_one("td.subject > span.coin") == None:
                             inner_charge.append("무료_작품")
@@ -225,32 +228,51 @@ while True:
                         else:
                             inner_charge.append("무료")
 
-                        inner_sub_title.append(temp_soup[j].select("td.subject > a")[0].string)
+                        try:
+                            inner_sub_title.append(temp_soup[j].select("td.subject > a")[0].string)
+                        except:
+                            inner_sub_title.append(None)
 
-                        if len(temp_soup[j].select("td.subject > a")) == 1:
-                            inner_count_comment.append(0)
-                        else:
-                            inner_count_comment.append(parseInt(temp_soup[j].select("td.subject > a")[1].string.replace("+", ""))) # 댓글 수
-                        
-                        date = temp_soup[j].select_one("td.date").string 
-                        flag_h = date.find(u"시간")
-                        flag_m = date.find(u"분")
-                        flag_s = date.find(u"초")
-                        now = datetime.datetime.now()
+                        try:
+                            if len(temp_soup[j].select("td.subject > a")) == 1:
+                                inner_count_comment.append(0)
+                            else:
+                                inner_count_comment.append(parseInt(temp_soup[j].select("td.subject > a")[1].string.replace("+", ""))) # 댓글 수
+                        except:
+                            inner_count_comment.append(None)
 
-                        if flag_h != -1 or flag_m != -1 or flag_s != -1:
-                            inner_date.append(str(now.year)+"."+str(now.month)+"."+str(now.day))
-                            inner_target.append(False)
-                        else:
-                            date_temp = date.split(".")
-                            date_temp[0] = str(20) + date_temp[0]
-                            inner_date.append(".".join(date_temp))
-                            inner_target.append(True)
+                        try:
+                            date = temp_soup[j].select_one("td.date").string 
+                            flag_h = date.find(u"시간")
+                            flag_m = date.find(u"분")
+                            flag_s = date.find(u"초")
+                            now = datetime.datetime.now()
 
-                        inner_purchase.append(parseInt(temp_soup[j].select_one("td:nth-of-type(5)").string))
+                            if flag_h != -1 or flag_m != -1 or flag_s != -1:
+                                inner_date.append(str(now.year)+"."+str(now.month)+"."+str(now.day))
+                                inner_target.append(False)
+                            else:
+                                date_temp = date.split(".")
+                                date_temp[0] = str(20) + date_temp[0]
+                                inner_date.append(".".join(date_temp))
+                                inner_target.append(True)
+                        except:
+                            inner_date.append(None)
+                            inner_target.append(None)
 
-                        inner_recommendation.append(parseInt(temp_soup[j].select_one("td:nth-of-type(6) span").string))
-                        inner_letter.append(parseIntremove(temp_soup[j].select_one("td:nth-of-type(7)").string))
+                        try:
+                            inner_purchase.append(parseInt(temp_soup[j].select_one("td:nth-of-type(5)").string))
+                        except:
+                            inner_purchase.append(None)
+
+                        try:
+                            inner_recommendation.append(parseInt(temp_soup[j].select_one("td:nth-of-type(6) span").string))
+                        except:
+                            inner_recommendation.append(None)
+                        try:
+                            inner_letter.append(parseIntremove(temp_soup[j].select_one("td:nth-of-type(7)").string))
+                        except:
+                            inner_letter.append(None)
 
                         # print(index_charged, "progress:", inner_index, j)
 
@@ -261,9 +283,10 @@ while True:
                 # 시간차주기
                 rand_value = random() * 2
                 time.sleep(rand_value)
-            except:
+            except Exception as e:
                 time.sleep(randint(10, 15))
                 print("retry", retry)
+                print(e)
                 retry += 1
 
         # 편당 데이터 정리
@@ -283,10 +306,17 @@ while True:
         for index in range(len(inner_serial)):
             temp_rate_of_change = None
 
-            now_purchase = float(inner_purchase[index])
+            now_purchase = None
+            if inner_purchase[index] != None:
+                now_purchase = float(inner_purchase[index])
+
             if index > 0:
-                prev_purchase_1 = float(inner_purchase[index-1])
-                if prev_purchase_1 != 0:
+                prev_purchase_1 = None
+                if inner_purchase[index-1] != None:
+                    prev_purchase_1 = float(inner_purchase[index-1])
+
+                temp_rate_of_change = None
+                if prev_purchase_1 != None and prev_purchase_1 != 0 and now_purchase != None:
                     temp_rate_of_change = (now_purchase - prev_purchase_1) / prev_purchase_1
             inner_rate_change_purchase.append(temp_rate_of_change)
 
@@ -296,24 +326,62 @@ while True:
             temp_rate_change_recommendation_five_avg = None
 
             if index > 3:
-                prev_purchase_1 = float(inner_purchase[index-1])
-                prev_purchase_2 = float(inner_purchase[index-2])
-                prev_purchase_3 = float(inner_purchase[index-3])
-                prev_purchase_4 = float(inner_purchase[index-4])
-
-                now_recommendation = float(inner_recommendation[index])
-                prev_recommendation_1 = float(inner_recommendation[index-1])
-                prev_recommendation_2 = float(inner_recommendation[index-2])
-                prev_recommendation_3 = float(inner_recommendation[index-3])
-                prev_recommendation_4 = float(inner_recommendation[index-4])
+                prev_purchase_1 = None
+                prev_purchase_2 = None
+                prev_purchase_3 = None
+                prev_purchase_4 = None
+                if inner_purchase[index-1] != None:
+                    prev_purchase_1 = float(inner_purchase[index-1])
                 
-                if prev_purchase_4 != 0:
-                    temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
-                temp_rate_change_purchase_five_avg = cal_avg(now_purchase, prev_purchase_1, prev_purchase_2, prev_purchase_3, prev_purchase_4)
+                if inner_purchase[index-2] != None:
+                    prev_purchase_2 = float(inner_purchase[index-2])
+                
+                if inner_purchase[index-3] != None:
+                    prev_purchase_3 = float(inner_purchase[index-3])
 
-                if prev_recommendation_4 != 0:
+                if inner_purchase[index-4] != None:
+                    prev_purchase_4 = float(inner_purchase[index-4])
+
+                now_recommendation = None
+                prev_recommendation_1 = None
+                prev_recommendation_2 = None
+                prev_recommendation_3 = None
+                prev_recommendation_4 = None
+
+                if inner_recommendation[index] != None:
+                    now_recommendation = float(inner_recommendation[index])
+
+                if inner_recommendation[index-1] != None:
+                    prev_recommendation_1 = float(inner_recommendation[index-1])
+
+                if inner_recommendation[index-2] != None:
+                    prev_recommendation_2 = float(inner_recommendation[index-2])
+
+                if inner_recommendation[index-3] != None:
+                    prev_recommendation_3 = float(inner_recommendation[index-3])
+
+                if inner_recommendation[index-4] != None:
+                    prev_recommendation_4 = float(inner_recommendation[index-4])
+                
+                try:
+                    temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
+                except:
+                    temp_rate_change_purchase_five = None
+
+                try:
+                    temp_rate_change_purchase_five_avg = cal_avg(now_purchase, prev_purchase_1, prev_purchase_2, prev_purchase_3, prev_purchase_4)
+                except:
+                    temp_rate_change_purchase_five_avg = None
+
+                try:
                     temp_rate_change_recommendation_five = (now_recommendation - prev_recommendation_4) / prev_recommendation_4
-                temp_rate_change_recommendation_five_avg = cal_avg(now_recommendation, prev_recommendation_1, prev_recommendation_2, prev_recommendation_3, prev_recommendation_4)
+                except:
+                    temp_rate_change_recommendation_five = None
+
+                try:
+                    temp_rate_change_recommendation_five_avg = cal_avg(now_recommendation, prev_recommendation_1, prev_recommendation_2, prev_recommendation_3, prev_recommendation_4)
+                except:
+                    temp_rate_change_recommendation_five_avg = None
 
             inner_rate_change_purchase_five.append(temp_rate_change_purchase_five)
             inner_rate_change_purchase_five_avg.append(temp_rate_change_purchase_five_avg)
@@ -354,7 +422,7 @@ while True:
         index_work += 1
 
         # 진행률 체크
-        print(index_charged, "progress:", index_work)
+        print(index_charged, "progress:", index_work, li_list_title[i].get("href"))
 
     # 기본 정보 변경
     print("progress:", index_charged, "done")
