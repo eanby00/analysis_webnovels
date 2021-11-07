@@ -38,6 +38,23 @@ def parseInt(num_string):
 def parseIntremove(num_string):
     return int("".join(num_string.strip().replace(u"쪽", "").split(",")))
 
+# 5개의 변화율 평균 계산
+def cal_avg(data_1, data_2, data_3, data_4, data_5):
+    temp = []
+    if data_2 != 0:
+        temp.append((data_1 - data_2) / data_2)
+    if data_3 != 0:
+        temp.append((data_2 - data_3) / data_3)
+    if data_4 != 0:
+        temp.append((data_3 - data_4) / data_4)
+    if data_5 != 0:
+        temp.append((data_4 - data_5) / data_5)
+    if len(temp) == 0:
+        return 0
+    else:
+        return sum(temp) / len(temp)
+
+
 # 문피아 유료 데이터 수집
 while True:
     file_novel_list = "munpia_novel_list_charge_serial_"+str(version_main)+"_"+str(index_charged)+".csv"
@@ -235,7 +252,8 @@ while True:
             now_purchase = float(inner_purchase[index])
             if index > 0:
                 prev_purchase_1 = float(inner_purchase[index-1])
-                temp_rate_of_change = (now_purchase - prev_purchase_1) / prev_purchase_1
+                if prev_purchase_1 != 0:
+                    temp_rate_of_change = (now_purchase - prev_purchase_1) / prev_purchase_1
             inner_rate_change_purchase.append(temp_rate_of_change)
 
             temp_rate_change_purchase_five = None
@@ -254,12 +272,14 @@ while True:
                 prev_recommendation_2 = float(inner_recommendation[index-2])
                 prev_recommendation_3 = float(inner_recommendation[index-3])
                 prev_recommendation_4 = float(inner_recommendation[index-4])
+                
+                if prev_purchase_4 != 0:
+                    temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
+                temp_rate_change_purchase_five_avg = cal_avg(now_purchase, prev_purchase_1, prev_purchase_2, prev_purchase_3, prev_purchase_4)
 
-                temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
-                temp_rate_change_purchase_five_avg = ((now_purchase - prev_purchase_1) / prev_purchase_1 + (prev_purchase_1 - prev_purchase_2) / prev_purchase_2 + (prev_purchase_2 - prev_purchase_3) / prev_purchase_3 + (prev_purchase_3 - prev_purchase_4) / prev_purchase_4) / 4
-
-                temp_rate_change_recommendation_five = (now_recommendation - prev_recommendation_4) / prev_recommendation_4
-                temp_rate_change_recommendation_five_avg = ((now_recommendation - prev_recommendation_1) / prev_recommendation_1 + (prev_recommendation_1 - prev_recommendation_2) / prev_recommendation_2 + (prev_recommendation_2 - prev_recommendation_3) / prev_recommendation_3 + (prev_recommendation_3 - prev_recommendation_4) / prev_recommendation_4) / 4
+                if prev_recommendation_4 != 0:
+                    temp_rate_change_recommendation_five = (now_recommendation - prev_recommendation_4) / prev_recommendation_4
+                temp_rate_change_recommendation_five_avg = cal_avg(now_recommendation, prev_recommendation_1, prev_recommendation_2, prev_recommendation_3, prev_recommendation_4)
 
             inner_rate_change_purchase_five.append(temp_rate_change_purchase_five)
             inner_rate_change_purchase_five_avg.append(temp_rate_change_purchase_five_avg)
