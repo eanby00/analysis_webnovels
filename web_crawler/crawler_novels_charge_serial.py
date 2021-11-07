@@ -24,6 +24,8 @@ prev_title_charged = ""
 
 # 연재 시작일과 최근 연재일을 이용한 기간 계산
 def cal_period(start, last):
+    if start == None or last == None:
+        return None
     last = list(map(int, last.split(" ")[0].split(".")))
     start = list(map(int, start.split(" ")[0].split(".")))
     last_time = datetime.datetime(last[0], last[1], last[2])
@@ -114,25 +116,57 @@ while True:
         url_inner = li_list_title[i].get("href")+"/page/"
         req_inner = requests.get(url_inner+str(inner_index), headers={'User-Agent': 'Mozilla/5.0'})
         soup_inner = BeautifulSoup(req_inner.text, "html.parser")
-
+        
         # 작품 상세 데이터 가져오기
         nth = 6
         if soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(7) > dt:nth-child(1)").string == u"작품등록일 :":
             nth = 7
-    
-        avg_serial_week.append(float(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > div.novel-real-period > span").string.split(" ")[3])) 
 
-        temp_start = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(2)" % nth).string
-        temp_last = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(4)" % nth).string
+        try:
+            avg_serial_week.append(float(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > div.novel-real-period > span").string.split(" ")[3])) 
+        except:
+            avg_serial_week.append(None)
+        
+        try:
+            temp_start = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(2)" % nth).string
+        except:
+            temp_start = None
 
+        try:
+            temp_last = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(4)" % nth).string
+        except:
+            temp_last = None
+
+        
         serial_start.append(temp_start) 
         serial_last.append(temp_last)
         period.append(cal_period(temp_start, temp_last))
-        serial_time.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(2)" % (nth + 1)).string.split(" ")[0])) 
-        view.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(4)" % (nth + 1)).string)) 
-        recommendation.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(6)" % (nth + 1)).string)) 
-        letter.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(8)" % (nth + 1)).string)) 
-        favorite.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > div.button-nav.housing > div.fr > a.button.novel.trigger-subscribe.require-login > span > b").string)) 
+        
+        try:
+            serial_time.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(2)" % (nth + 1)).string.split(" ")[0])) 
+        except:
+            serial_time.append(None)
+        
+        try:
+            view.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(4)" % (nth + 1)).string)) 
+        except:
+            view.append(None)
+        
+        try:
+            recommendation.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(6)" % (nth + 1)).string)) 
+        except:
+            recommendation.append(None)
+        
+        try:
+            letter.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dd:nth-child(8)" % (nth + 1)).string)) 
+        except:
+            letter.append(None)
+        
+        try:
+            favorite.append(parseInt(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > div.button-nav.housing > div.fr > a.button.novel.trigger-subscribe.require-login > span > b").string)) 
+        except:
+            favorite.append(None)
+            
 
         # 시간차주기
         rand_value = random() * 2
@@ -361,6 +395,7 @@ while True:
     # letter_per_serial 편당 평균 조회수, letter / serial_time
     # favorite_per_serial 편당 평균 조회수, favorite / serial_time
 
+    
     df_list["view_per_date"] = df_list["view"] / df_list["period"]
     df_list["recommendation_per_date"] = df_list["recommendation"] / df_list["period"]
     df_list["letter_per_date"] = df_list["letter"] / df_list["period"]
