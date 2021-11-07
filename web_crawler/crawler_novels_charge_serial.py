@@ -285,7 +285,7 @@ while True:
                 time.sleep(rand_value)
             except Exception as e:
                 time.sleep(randint(10, 15))
-                print("retry", retry)
+                print("retry", retry, li_list_title[i].get("href"))
                 print(e)
                 retry += 1
 
