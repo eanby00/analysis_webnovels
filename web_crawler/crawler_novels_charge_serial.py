@@ -12,7 +12,7 @@ import datetime
 version_main = 1
 
 # 초기화
-url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/exclusive/1/gpage/"
+url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/gpage/"
 
 ## index
 index_charged = 1
@@ -119,10 +119,10 @@ while True:
         
         # 작품 상세 데이터 가져오기
         nth = 5
-        for i in range(5,9):
-            test = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dt:nth-child(1)" % i)
+        for n in range(5,9):
+            test = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dt:nth-child(1)" % n)
             if test != None and test.string != None and test.string == u"작품등록일 :":
-                nth = i
+                nth = n
                 break
 
         try:
