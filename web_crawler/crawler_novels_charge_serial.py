@@ -416,7 +416,7 @@ while True:
             df_inner_list.to_csv(file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
 
             # hdfs로 전송
-            hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", file_novel_unit_list)
+            hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", "munpia_novel_unit_list_charge_serial", file_novel_unit_list)
 
             put_unit = Popen(["hadoop", "fs", "-put", file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
             put_unit.communicate()
@@ -483,7 +483,7 @@ while True:
     df_list.to_csv(file_novel_list, encoding="utf-8", index=None)
 
     # vm내에 저장된 csv파일을 hdfs의 maria_dev/analysis_webnovels 아래에 저장
-    hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", file_novel_list)
+    hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", "munpia_novel_list_charge_serial", file_novel_list)
 
     # 소설 리스트를 analysis_webnovels/novel_list에 저장
     put = Popen(["hadoop", "fs", "-put", file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)
