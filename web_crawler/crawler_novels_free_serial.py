@@ -274,9 +274,7 @@ while True:
                 # 기본 정보 변경
                 inner_index += 1
                 inner_prev_serial = temp_soup[0].select_one("td.index > span").string
-
                 
-
                 # 시간차주기
                 time.sleep(random())
 

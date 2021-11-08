@@ -171,10 +171,6 @@ while True:
             favorite.append(None)
             
 
-        # 시간차주기
-        rand_value = random() * 2
-        time.sleep(rand_value)
-
         # 작품의 편당 데이터 가져오기 -------------------------------------------------------------------------------------------------------------------------------------------
         # 편당 정보 데이터
         main_id = [] # 작품의 id
@@ -285,8 +281,8 @@ while True:
                 inner_prev_serial = temp_soup[0].select_one("td.index > span").string
 
                 # 시간차주기
-                rand_value = random() * 2
-                time.sleep(rand_value)
+                time.sleep(random())
+
             except Exception as e:
                 time.sleep(randint(10, 15))
                 print("retry", retry, li_list_title[i].get("href"))
@@ -439,7 +435,7 @@ while True:
     prev_author_charged = li_list_author[0].string.strip()
     prev_title_charged = li_list_title[0].string.strip()
 
-    time.sleep(5)
+    time.sleep(random()*2)
 
     # 해당 데이터들을 DataFrame으로 저장
     df_list = pd.DataFrame({
