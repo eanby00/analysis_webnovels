@@ -297,7 +297,7 @@ while True:
                     break
                 retry += 1
 
-        if isSkip:
+        if not isSkip:
             # 편당 데이터 정리
             main_id.reverse()
             inner_version.reverse()
