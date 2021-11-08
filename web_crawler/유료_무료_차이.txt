@@ -1,0 +1,6 @@
+무료는 유료 대비 조회, 추천, 글자의 nth-of-type이 -1씩 되어야 함
+무료 시작 링크 https://novel.munpia.com/page/novelous/group/nv.regular/gpage/
+
+source를 "문피아_무료"로 전환할 것
+편당 상세 정보에서 아예 "무료_작품"으로 데이터를 줄 것
+무료 버전에서는 댓글에 접속한 후 댓글 정보 csv화하는 코드 결합해서 추가할 것
