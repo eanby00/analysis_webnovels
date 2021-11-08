@@ -118,9 +118,12 @@ while True:
         soup_inner = BeautifulSoup(req_inner.text, "html.parser")
         
         # 작품 상세 데이터 가져오기
-        nth = 6
-        if soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(7) > dt:nth-child(1)").string == u"작품등록일 :":
-            nth = 7
+        nth = 5
+        for i in range(5,9):
+            test = soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > dl:nth-child(%d) > dt:nth-child(1)" % i)
+            if test != None and test.string != None and test.string == u"작품등록일 :":
+                nth = i
+                break
 
         try:
             avg_serial_week.append(float(soup_inner.select_one("#board > div.novel-info.dl-horizontal.zoom > div.dd.detail-box > div.novel-real-period > span").string.split(" ")[3])) 
@@ -199,6 +202,7 @@ while True:
 
         file_novel_unit_list = "munpia_novel_unit_list_charge_serial_"+str(version_main)+"_"+str(index_work)+".csv"
 
+        isSkip = False
         while True:
             try:
                 # 해당 url에서 데이터 가져오기
@@ -287,142 +291,147 @@ while True:
                 time.sleep(randint(10, 15))
                 print("retry", retry, li_list_title[i].get("href"))
                 print(e)
+                if retry > 5:
+                    print("skip", li_list_title[i].get("href"))
+                    isSkip = True
+                    break
                 retry += 1
 
-        # 편당 데이터 정리
-        main_id.reverse()
-        inner_version.reverse()
-        inner_serial.reverse()
-        inner_charge.reverse()
-        inner_sub_title.reverse()
-        inner_count_comment.reverse()
-        inner_date.reverse()
-        inner_purchase.reverse()
-        inner_recommendation.reverse()
-        inner_letter.reverse()
-        inner_target.reverse()
+        if isSkip:
+            # 편당 데이터 정리
+            main_id.reverse()
+            inner_version.reverse()
+            inner_serial.reverse()
+            inner_charge.reverse()
+            inner_sub_title.reverse()
+            inner_count_comment.reverse()
+            inner_date.reverse()
+            inner_purchase.reverse()
+            inner_recommendation.reverse()
+            inner_letter.reverse()
+            inner_target.reverse()
 
-        # 데이터 추가
-        for index in range(len(inner_serial)):
-            temp_rate_of_change = None
-
-            now_purchase = None
-            if inner_purchase[index] != None:
-                now_purchase = float(inner_purchase[index])
-
-            if index > 0:
-                prev_purchase_1 = None
-                if inner_purchase[index-1] != None:
-                    prev_purchase_1 = float(inner_purchase[index-1])
-
+            # 데이터 추가
+            for index in range(len(inner_serial)):
                 temp_rate_of_change = None
-                if prev_purchase_1 != None and prev_purchase_1 != 0 and now_purchase != None:
-                    temp_rate_of_change = (now_purchase - prev_purchase_1) / prev_purchase_1
-            inner_rate_change_purchase.append(temp_rate_of_change)
 
-            temp_rate_change_purchase_five = None
-            temp_rate_change_purchase_five_avg = None
-            temp_rate_change_recommendation_five = None
-            temp_rate_change_recommendation_five_avg = None
+                now_purchase = None
+                if inner_purchase[index] != None:
+                    now_purchase = float(inner_purchase[index])
 
-            if index > 3:
-                prev_purchase_1 = None
-                prev_purchase_2 = None
-                prev_purchase_3 = None
-                prev_purchase_4 = None
-                if inner_purchase[index-1] != None:
-                    prev_purchase_1 = float(inner_purchase[index-1])
-                
-                if inner_purchase[index-2] != None:
-                    prev_purchase_2 = float(inner_purchase[index-2])
-                
-                if inner_purchase[index-3] != None:
-                    prev_purchase_3 = float(inner_purchase[index-3])
+                if index > 0:
+                    prev_purchase_1 = None
+                    if inner_purchase[index-1] != None:
+                        prev_purchase_1 = float(inner_purchase[index-1])
 
-                if inner_purchase[index-4] != None:
-                    prev_purchase_4 = float(inner_purchase[index-4])
+                    temp_rate_of_change = None
+                    if prev_purchase_1 != None and prev_purchase_1 != 0 and now_purchase != None:
+                        temp_rate_of_change = (now_purchase - prev_purchase_1) / prev_purchase_1
+                inner_rate_change_purchase.append(temp_rate_of_change)
 
-                now_recommendation = None
-                prev_recommendation_1 = None
-                prev_recommendation_2 = None
-                prev_recommendation_3 = None
-                prev_recommendation_4 = None
+                temp_rate_change_purchase_five = None
+                temp_rate_change_purchase_five_avg = None
+                temp_rate_change_recommendation_five = None
+                temp_rate_change_recommendation_five_avg = None
 
-                if inner_recommendation[index] != None:
-                    now_recommendation = float(inner_recommendation[index])
+                if index > 3:
+                    prev_purchase_1 = None
+                    prev_purchase_2 = None
+                    prev_purchase_3 = None
+                    prev_purchase_4 = None
+                    if inner_purchase[index-1] != None:
+                        prev_purchase_1 = float(inner_purchase[index-1])
+                    
+                    if inner_purchase[index-2] != None:
+                        prev_purchase_2 = float(inner_purchase[index-2])
+                    
+                    if inner_purchase[index-3] != None:
+                        prev_purchase_3 = float(inner_purchase[index-3])
 
-                if inner_recommendation[index-1] != None:
-                    prev_recommendation_1 = float(inner_recommendation[index-1])
+                    if inner_purchase[index-4] != None:
+                        prev_purchase_4 = float(inner_purchase[index-4])
 
-                if inner_recommendation[index-2] != None:
-                    prev_recommendation_2 = float(inner_recommendation[index-2])
+                    now_recommendation = None
+                    prev_recommendation_1 = None
+                    prev_recommendation_2 = None
+                    prev_recommendation_3 = None
+                    prev_recommendation_4 = None
 
-                if inner_recommendation[index-3] != None:
-                    prev_recommendation_3 = float(inner_recommendation[index-3])
+                    if inner_recommendation[index] != None:
+                        now_recommendation = float(inner_recommendation[index])
 
-                if inner_recommendation[index-4] != None:
-                    prev_recommendation_4 = float(inner_recommendation[index-4])
-                
-                try:
-                    temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
-                except:
-                    temp_rate_change_purchase_five = None
+                    if inner_recommendation[index-1] != None:
+                        prev_recommendation_1 = float(inner_recommendation[index-1])
 
-                try:
-                    temp_rate_change_purchase_five_avg = cal_avg(now_purchase, prev_purchase_1, prev_purchase_2, prev_purchase_3, prev_purchase_4)
-                except:
-                    temp_rate_change_purchase_five_avg = None
+                    if inner_recommendation[index-2] != None:
+                        prev_recommendation_2 = float(inner_recommendation[index-2])
 
-                try:
-                    temp_rate_change_recommendation_five = (now_recommendation - prev_recommendation_4) / prev_recommendation_4
-                except:
-                    temp_rate_change_recommendation_five = None
+                    if inner_recommendation[index-3] != None:
+                        prev_recommendation_3 = float(inner_recommendation[index-3])
 
-                try:
-                    temp_rate_change_recommendation_five_avg = cal_avg(now_recommendation, prev_recommendation_1, prev_recommendation_2, prev_recommendation_3, prev_recommendation_4)
-                except:
-                    temp_rate_change_recommendation_five_avg = None
+                    if inner_recommendation[index-4] != None:
+                        prev_recommendation_4 = float(inner_recommendation[index-4])
+                    
+                    try:
+                        temp_rate_change_purchase_five = (now_purchase - prev_purchase_4) / prev_purchase_4
+                    except:
+                        temp_rate_change_purchase_five = None
 
-            inner_rate_change_purchase_five.append(temp_rate_change_purchase_five)
-            inner_rate_change_purchase_five_avg.append(temp_rate_change_purchase_five_avg)
-            inner_rate_change_recommendation_five.append(temp_rate_change_recommendation_five)
-            inner_rate_change_recommendation_five_avg.append(temp_rate_change_recommendation_five_avg)
+                    try:
+                        temp_rate_change_purchase_five_avg = cal_avg(now_purchase, prev_purchase_1, prev_purchase_2, prev_purchase_3, prev_purchase_4)
+                    except:
+                        temp_rate_change_purchase_five_avg = None
 
-        # 편당 데이터를 data frame으로 저장
-        df_inner_list = pd.DataFrame({
-            "book_id":main_id,
-            "version":inner_version,
-            "serial":inner_serial,
-            "charge":inner_charge,
-            "sub_title":inner_sub_title,
-            "count_comment": inner_count_comment,
-            "date":inner_date,
-            "purchase": inner_purchase,
-            "recommendation":inner_recommendation,
-            "letter": inner_letter,
-            "target": inner_target,
-            "rate_change_purchase": inner_rate_change_purchase,
-            "rate_change_purchase_five": inner_rate_change_purchase_five,
-            "rate_change_purchase_five_avg": inner_rate_change_purchase_five_avg,
-            "rate_change_recommendation_five": inner_rate_change_recommendation_five,
-            "rate_change_recommendation_five_avg": inner_rate_change_recommendation_five_avg})
+                    try:
+                        temp_rate_change_recommendation_five = (now_recommendation - prev_recommendation_4) / prev_recommendation_4
+                    except:
+                        temp_rate_change_recommendation_five = None
 
-        # 편당 데이터 프레임을 csv로 저장
-        df_inner_list.to_csv(file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
+                    try:
+                        temp_rate_change_recommendation_five_avg = cal_avg(now_recommendation, prev_recommendation_1, prev_recommendation_2, prev_recommendation_3, prev_recommendation_4)
+                    except:
+                        temp_rate_change_recommendation_five_avg = None
 
-        # hdfs로 전송
-        hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", file_novel_unit_list)
+                inner_rate_change_purchase_five.append(temp_rate_change_purchase_five)
+                inner_rate_change_purchase_five_avg.append(temp_rate_change_purchase_five_avg)
+                inner_rate_change_recommendation_five.append(temp_rate_change_recommendation_five)
+                inner_rate_change_recommendation_five_avg.append(temp_rate_change_recommendation_five_avg)
 
-        put_unit = Popen(["hadoop", "fs", "-put", file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
-        put_unit.communicate()
+            # 편당 데이터를 data frame으로 저장
+            df_inner_list = pd.DataFrame({
+                "book_id":main_id,
+                "version":inner_version,
+                "serial":inner_serial,
+                "charge":inner_charge,
+                "sub_title":inner_sub_title,
+                "count_comment": inner_count_comment,
+                "date":inner_date,
+                "purchase": inner_purchase,
+                "recommendation":inner_recommendation,
+                "letter": inner_letter,
+                "target": inner_target,
+                "rate_change_purchase": inner_rate_change_purchase,
+                "rate_change_purchase_five": inner_rate_change_purchase_five,
+                "rate_change_purchase_five_avg": inner_rate_change_purchase_five_avg,
+                "rate_change_recommendation_five": inner_rate_change_recommendation_five,
+                "rate_change_recommendation_five_avg": inner_rate_change_recommendation_five_avg})
+
+            # 편당 데이터 프레임을 csv로 저장
+            df_inner_list.to_csv(file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
+
+            # hdfs로 전송
+            hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", file_novel_unit_list)
+
+            put_unit = Popen(["hadoop", "fs", "-put", file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
+            put_unit.communicate()
 
         # 편당 데이터 완료 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # 정보 변경
-        index_work += 1
-
         # 진행률 체크
         print(index_charged, "progress:", index_work, li_list_title[i].get("href"))
+
+        # 정보 변경
+        index_work += 1
 
     # 기본 정보 변경
     print("progress:", index_charged, "done")

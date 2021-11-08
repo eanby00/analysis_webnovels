@@ -7,3 +7,13 @@ except:
     b = 1
 
 print(a, b)
+
+d = [1,2,None,4,5]
+
+for i in d:
+    try:
+        print(1/i)
+    except:
+        print("error")
+        if i == None:
+            break
