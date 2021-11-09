@@ -282,7 +282,7 @@ while True:
                 time.sleep(randint(10, 15))
                 print("retry", retry, li_list_title[i].get("href"))
                 print(e)
-                if retry > 5:
+                if retry > 3:
                     print("skip", li_list_title[i].get("href"))
                     isSkip = True
                     break
