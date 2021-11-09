@@ -12,7 +12,7 @@ import datetime
 version_main = 1
 
 # 초기화
-url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/gpage/"
+url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/finish/1/gpage/"
 
 ## index
 index_charged = 1
@@ -59,7 +59,7 @@ def cal_avg(data_1, data_2, data_3, data_4, data_5):
 
 # 문피아 유료 데이터 수집
 while True:
-    file_novel_list = "munpia_novel_list_charge_serial_"+str(version_main)+"_"+str(index_charged)+".csv"
+    file_novel_list = "munpia_novel_list_charge_ending_"+str(version_main)+"_"+str(index_charged)+".csv"
     ## DataFrame 내부 데이터 - 작품 기본
     id = [] # 작품 id, 해당 version에서만 의미가 있음 
     author = [] # 작가
@@ -108,7 +108,7 @@ while True:
         link.append(li_list_title[i].get("href"))
         version.append(version_main)
         source.append("문피아_유료")
-        ending.append("연재작")
+        ending.append("완결작")
         check_count.append(0)
 
         # 작품 상세 데이터 접근
@@ -196,7 +196,7 @@ while True:
         inner_prev_serial = 0
         retry = 0
 
-        file_novel_unit_list = "munpia_novel_unit_list_charge_serial_"+str(version_main)+"_"+str(index_work)+".csv"
+        file_novel_unit_list = "munpia_novel_unit_list_charge_ending_"+str(version_main)+"_"+str(index_work)+".csv"
 
         isSkip = False
         while True:
@@ -426,7 +426,7 @@ while True:
             df_inner_list.to_csv("./novel_unit_list/"+file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
 
             # hdfs로 전송
-            hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", "munpia_novel_unit_list_charge_serial", file_novel_unit_list)
+            hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", "munpia_novel_unit_list_charge_ending", file_novel_unit_list)
 
             put_unit = Popen(["hadoop", "fs", "-put", "./novel_unit_list/"+file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
             put_unit.communicate()
@@ -493,7 +493,7 @@ while True:
     df_list.to_csv("./novel_list/"+file_novel_list, encoding="utf-8", index=None)
 
     # vm내에 저장된 csv파일을 hdfs의 maria_dev/analysis_webnovels 아래에 저장
-    hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", "munpia_novel_list_charge_serial", file_novel_list)
+    hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", "munpia_novel_list_charge_ending", file_novel_list)
 
     # 소설 리스트를 analysis_webnovels/novel_list에 저장
     put = Popen(["hadoop", "fs", "-put", "./novel_list/"+file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)

@@ -278,6 +278,16 @@ while True:
                 # 시간차주기
                 time.sleep(random())
 
+            except AttributeError:
+                print("skip", li_list_title[i].get("href"))
+                isSkip = True
+                break
+
+            except IndexError:
+                print("skip", li_list_title[i].get("href"))
+                isSkip = True
+                break
+
             except Exception as e:
                 time.sleep(randint(10, 15))
                 print("retry", retry, li_list_title[i].get("href"))
@@ -408,12 +418,12 @@ while True:
                 "rate_change_recommendation_five_avg": inner_rate_change_recommendation_five_avg})
 
             # 편당 데이터 프레임을 csv로 저장
-            df_inner_list.to_csv(file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
+            df_inner_list.to_csv("./novel_unit_list/"+file_novel_unit_list, encoding="utf-8", index_label= "unit_id")
 
             # hdfs로 전송
             hdfs_path_unit = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_unit_list", "munpia_novel_unit_list_free_serial", file_novel_unit_list)
 
-            put_unit = Popen(["hadoop", "fs", "-put", file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
+            put_unit = Popen(["hadoop", "fs", "-put", "./novel_unit_list/"+file_novel_unit_list, hdfs_path_unit], stdin=PIPE, bufsize=-1)
             put_unit.communicate()
 
         # 편당 데이터 완료 ------------------------------------------------------------------------------------------
@@ -475,13 +485,13 @@ while True:
     df_list["favorite_per_serial"] = df_list["favorite"] / df_list["serial_time"]
 
     # 데이터프레임 csv로 저장
-    df_list.to_csv(file_novel_list, encoding="utf-8", index=None)
+    df_list.to_csv("./novel_list/"+file_novel_list, encoding="utf-8", index=None)
 
     # vm내에 저장된 csv파일을 hdfs의 maria_dev/analysis_webnovels 아래에 저장
     hdfs_path = os.path.join(os.sep, "user", "maria_dev", "analysis_webnovels", "novel_list", "munpia_novel_list_free_serial", file_novel_list)
 
     # 소설 리스트를 analysis_webnovels/novel_list에 저장
-    put = Popen(["hadoop", "fs", "-put", file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)
+    put = Popen(["hadoop", "fs", "-put", "./novel_list/"+file_novel_list, hdfs_path], stdin=PIPE, bufsize=-1)
     put.communicate()
 
 print("done")
