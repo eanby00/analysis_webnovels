@@ -26,11 +26,14 @@ prev_title_charged = ""
 def cal_period(start, last):
     if start == None or last == None:
         return None
-    last = list(map(int, last.split(" ")[0].split(".")))
-    start = list(map(int, start.split(" ")[0].split(".")))
-    last_time = datetime.datetime(last[0], last[1], last[2])
-    start_time = datetime.datetime(start[0], start[1], start[2])
-    return (last_time - start_time).days
+    try:
+        last = list(map(int, last.split(" ")[0].split(".")))
+        start = list(map(int, start.split(" ")[0].split(".")))
+        last_time = datetime.datetime(last[0], last[1], last[2])
+        start_time = datetime.datetime(start[0], start[1], start[2])
+        return (last_time - start_time).days
+    except ValueError:
+        return None
 
 # ,가 포함된 string 타입의 숫자 데이터를 숫자로 변형 ex) 123,456 => 123456
 def parseInt(num_string):
