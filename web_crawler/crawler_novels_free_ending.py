@@ -89,9 +89,9 @@ while True:
     li_list_author = soup.select("#SECTION-LIST > ul a.author.col-xs-4")
     li_list_title = soup.select("#SECTION-LIST > ul a.title.col-xs-6")
 
-    # 테스팅용
-    if index_free == 2:
-        break
+    # # 테스팅용
+    # if index_free == 2:
+    #     break
 
     # while 탈출 조건: prev_author가 현재 페이지의 1번째 작가와 같고 prev_title이 1번째 작품과 같아야함
     if prev_author_free == li_list_author[0].string.strip() and prev_title_free == li_list_title[0].string.strip():
