@@ -177,6 +177,8 @@ while True:
         # 편당 정보 데이터
         main_id = [] # 작품의 id
         inner_version = [] # 데이터를 수집한 version
+        inner_source = []  # 해당 편을 수집한 곳이 어디인지
+        inner_ending = [] # 해당 작품이 연재 작품인지 완결 작품인지
         inner_serial = [] # 해당 편의 편수
         inner_charge = [] # 해당 편이 유료인지 무료인지, 무료_작품, 유료, 무료로 나뉘어짐
         inner_sub_title = [] # 해당 편의 소제목
@@ -218,6 +220,8 @@ while True:
                     # 작품 데이터 가져오기
                         main_id.append(index_work)
                         inner_version.append(version_main)
+                        inner_source.append("문피아_무료")
+                        inner_ending.append("연재작")
                         temp_serial = None
                         try:
                             temp_serial = parseInt(temp_soup[j].select_one("td.index > span").string)
@@ -405,6 +409,8 @@ while True:
             df_inner_list = pd.DataFrame({
                 "book_id":main_id,
                 "version":inner_version,
+                "source":inner_source,
+                "ending":inner_ending,
                 "serial":inner_serial,
                 "charge":inner_charge,
                 "sub_title":inner_sub_title,
