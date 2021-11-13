@@ -1,7 +1,7 @@
 # 데이터 설명
 
 ## munpia_novel_list: 문피아 작품 작품 list 정보
-## munpia_novel_list_[charge/free]_[serial/ending]_[version]_[page].csv
+## munpia_novel_list_[charge/free] _ [serial/ending] _ [version] _ [page].csv
 - charge / free: 데이터 수집 장소가 유료인지 무료인지
 - serial / ending: 해당 작품이 연재 중인지 완결되었는지
 - version: 데이터를 수집한 버전
@@ -35,7 +35,7 @@
     - favorite_per_serial: 1편당 추가된 선호하는 독자 수  
 
 ## munpia_novel_unit_list: 문피아 작품의 각 작품당 편당 데이터
-## munpia_novel_unit_list_[charge/free]_[serial/ending]_[version]_[index].csv
+## munpia_novel_unit_list_[charge/free] _ [serial/ending] _ [version] _ [index].csv
 
 - header 소개: unit_id,book_id,charge,count_comment,date,letter,purchase,rate_change_purchase,rate_change_purchase_five,rate_change_purchase_five_avg,rate_change_recommendation_five,rate_change_recommendation_five_avg,recommendation,serial,sub_title,target,version
     - unit_id: 책의 편당 id, book_id, unit_id, version을 결합할 때 유일한 값이 됨
