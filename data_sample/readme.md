@@ -37,12 +37,13 @@
 ## munpia_novel_unit_list: 문피아 작품의 각 작품당 편당 데이터
 ## munpia_novel_unit_list_[charge/free] _ [serial/ending] _ [version] _ [index].csv
 
-- header 소개: unit_id,book_id,charge,count_comment,date,letter,purchase,rate_change_purchase,rate_change_purchase_five,rate_change_purchase_five_avg,rate_change_recommendation_five,rate_change_recommendation_five_avg,recommendation,serial,sub_title,target,version
+- header 소개: unit_id,book_id,charge,count_comment,date,ending,letter,purchase,rate_change_purchase,rate_change_purchase_five,rate_change_purchase_five_avg,rate_change_recommendation_five,rate_change_recommendation_five_avg,recommendation,serial,source,sub_title,target,version
     - unit_id: 책의 편당 id, book_id, unit_id, version을 결합할 때 유일한 값이 됨
     - book_id: 책의 id
     - charge: 해당 편이 유료 작품의 무료, 유료인지, 무료 작품의 무료인지 구분
     - count_comment: 해당 편의 댓글 갯수
     - date: 해당 편이 연재된 날짜
+    - ending: 해당 편이 연재작에서 수집된 것인지, 완결작에서 수집된 것인지
     - letter: 해당 편의 쪽 수
     - purchase: 해당 편의 구매횟수, 조회횟수
     - rate_change_purchase: 전편 대비 변화한 구매횟수의 변화율
@@ -52,6 +53,7 @@
     - rate_change_recommendation_five_avg: 5편 전부터의 편당 변화한 추천 수의 변화율의 평균
     - recommendation: 해당 편의 추천 횟수
     - serial: 해당 편의 편 수
+    - source: 해당 편을 무료 데이터에서 수집했는지 유료 데이터에서 수집했는지
     - sub_title: 해당 편의 소제목
     - target: 해당 편이 후에 처리될 때 대상이 되는가 여부, n 시간 전, n 분 전, n 초 전의 데이터를 포함하기 적합하지 않다고 판단
     - version: 해당 데이터를 수집한 버전
