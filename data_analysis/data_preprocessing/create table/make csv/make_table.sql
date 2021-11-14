@@ -36,7 +36,8 @@ create external table if not exists novel_unit_list(
   book_id int, 
   charge string,
   count_comment int,
-  date string,
+  date_serial string,
+  ending string,
   letter int,
   purchase int,
   rate_change_purchase double,
@@ -46,6 +47,7 @@ create external table if not exists novel_unit_list(
   rate_change_recommendation_five_avg double,
   recommendation int,
   serial int,
+  source string,
   sub_title string,
   target boolean,
   version int
