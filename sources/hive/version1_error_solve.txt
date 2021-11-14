@@ -1,0 +1,6 @@
+update나 delete의 경우 특별한 setting이 필요함, but 이해하지 못해 사용하지 못했음
+-> 대안으로 create as select를 이용
+-> 문제점: select에서 새로 추가한 데이터는 c_1 과 같은 이름을 가짐, 따라서 rename 필요
+-> 해당 source 참고: https://stackoverflow.com/questions/22041316/hive-alter-table-change-column-name
+
+-> check_count 사용 불가능해짐, but 편의 상의 값을 기록하기 위한 용도라서 상관 없을 것으로 추측함

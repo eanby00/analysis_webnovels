@@ -27,7 +27,7 @@ create external table if not exists novel_list(
   favorite_per_serial double
 )
 row format serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-location '/user/maria_dev/analysis_webnovels/novel_list'
+location '/user/maria_dev/analysis_webnovels/preprocessing/novel_list'
 tblproperties('skip.header.line.count' = '1');
 
 drop table novel_unit_list;
@@ -53,5 +53,5 @@ create external table if not exists novel_unit_list(
   version int
 )
 row format serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-location '/user/maria_dev/analysis_webnovels/novel_unit_list'
+location '/user/maria_dev/analysis_webnovels/preprocessing/novel_unit_list'
 tblproperties('skip.header.line.count' = '1');

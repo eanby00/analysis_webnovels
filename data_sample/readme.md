@@ -10,7 +10,7 @@
 - header 소개: author,avg_serial_week,check_count,ending,favorite,id,letter,link,period,recommendation,serial_last,serial_start,serial_time,source,title,version,view,view_per_date,recommendation_per_date,letter_per_date,favorite_per_date,view_per_serial,recommendation_per_serial,letter_per_serial,favorite_per_serial
     - author: 소설의 저자
     - avg_serial_week: 소설이 일주일에 연재되는 평균 횟수
-    - check_count: 소설이 기준값 이하의 구매량 감소를 겪은 횟수
+    - check_count: 소설이 기준값 이하의 구매량 감소를 겪은 횟수, hive update 불가로 사용 X
     - ending: 연재중, 완결의 구분
     - favorite: 해당 작품을 선호하는 독자 수
     - id: 소설의 id, 평범한 id와는 달리 version과 함께 쓸 때에만 고유함

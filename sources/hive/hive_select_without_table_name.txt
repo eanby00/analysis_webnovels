@@ -1,0 +1,4 @@
+set hive.resultset.use.unique.column.names=false;
+위의 명령어를 select 위에 작성해 select의 결과물에 테이블 이름이 붙는 것을 방지할 수 있음
+
+source: https://stackoverflow.com/questions/43112868/avoid-printing-table-name-in-column-name-while-using-beeline

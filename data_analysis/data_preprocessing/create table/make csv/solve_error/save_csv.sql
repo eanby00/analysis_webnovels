@@ -1,3 +1,5 @@
+set hive.resultset.use.unique.column.names=false;
+
 select * from novel_unit_list_1_1
 union
 select * from novel_unit_list_1_2
