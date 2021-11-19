@@ -9,7 +9,7 @@ import time
 import datetime
 
 # 기본 정보
-version_main = 2
+version_main = 3
 
 # 초기화
 url_charged = "https://novel.munpia.com/page/novelous/group/pl.serial/gpage/"
@@ -117,7 +117,16 @@ while True:
         # 작품 상세 데이터 접근
         inner_index = 1
         url_inner = li_list_title[i].get("href")+"/page/"
-        req_inner = requests.get(url_inner+str(inner_index), headers={'User-Agent': 'Mozilla/5.0'})
+        req_inner = None
+        for retry_req in range(3):
+            try:
+                if req_inner == None:
+                    req_inner = requests.get(url_inner+str(inner_index), headers={'User-Agent': 'Mozilla/5.0'})
+                else:
+                    break
+            except ConnectionError:
+                time.sleep(5)
+                pass
         soup_inner = BeautifulSoup(req_inner.text, "html.parser")
         
         # 작품 상세 데이터 가져오기

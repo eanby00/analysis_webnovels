@@ -15,5 +15,5 @@ for i in d:
         print(1/i)
     except:
         print("error")
-        if i == None:
-            break
+        continue
+    print("next ------------------")
