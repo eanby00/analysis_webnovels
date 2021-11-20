@@ -124,7 +124,7 @@ while True:
                     req_inner = requests.get(url_inner+str(inner_index), headers={'User-Agent': 'Mozilla/5.0'})
                 else:
                     break
-            except ConnectionError:
+            except requests.ConnectionError:
                 time.sleep(5)
                 pass
         soup_inner = BeautifulSoup(req_inner.text, "html.parser")
