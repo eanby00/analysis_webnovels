@@ -1,6 +1,7 @@
 -- unit_novel_list의 count_comment
 select version, source, ending, max(count_comment) as max_value, min(count_comment) as min_value, avg(count_comment) as avg_value
 from novel_unit_list group by version, source, ending;
+    -- 문피아 유료 연재작의 평균 댓글 수가 가장 많았고 문피아 무료의 평균 댓글 수가 비슷하게 적었음
 
 -- unit_novel_list의 letter
 select version, source, ending, max(letter) as max_value, min(letter) as min_value, avg(letter) as avg_value

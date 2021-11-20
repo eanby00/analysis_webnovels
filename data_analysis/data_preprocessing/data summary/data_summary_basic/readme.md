@@ -6,3 +6,8 @@
 ## 모든 attribute가 비교적 정상적인 값을 가지고 있음
 ### letter의 경우 모든 데이터의 평균값이 약 12쪽으로 일정함
 ### rate_change_purchase, rate_change_purchase_five_avg,rate_change_recommendation_five_avg의 경우 모든 데이터의 평균값이 약 0으로 일정함
+
+# data_summary_check_standard.hql
+## 기준 설정을 위한 hql 코드
+## 반복문에 대해 알지 못해 0 ~ -0.95까지 일일이 테스팅하기 때문에 양이 많아 따로 분리함
+## 결과 기준을 10%로 결정함, 10%일 때 한 버전에서 약 60000개의 데이터가 걸려 충분히 많은 양의 데이터를 줄였다고 판단함
