@@ -15,6 +15,7 @@ select count(id) from novel_list where version = 1 and source = '문피아_무�
 
 -- version, source, ending 별 데이터 개수
 select version, source, ending, count(id) from novel_list group by version, source, ending;
+    -- 문피아 무료 연재작의 작품 개수가 가장 많고 문피아 유료 연재작의 경우 가장 적었음
 
 ----------------------------------------------------------------------------------------------------------------
 
@@ -30,11 +31,12 @@ select count(sub_title) from novel_unit_list where version = 1 and source = '문
 select count(sub_title) from novel_unit_list where version = 1 and source = '문피아_유료' and ending = '완결작';
 -- version 1의 문피아 무료 연재작의 편당 데이터 총 개수: 258916
 select count(sub_title) from novel_unit_list where version = 1 and source = '문피아_무료' and ending = '연재작';
--- version 1의 문피아 유료 완결작의 편당 데이터 총 개수: 97047
+-- version 1의 문피아 무료 완결작의 편당 데이터 총 개수: 97047
 select count(sub_title) from novel_unit_list where version = 1 and source = '문피아_무료' and ending = '완결작';
 
 -- version, source, ending 별 데이터 개수
 select version, source, ending, count(sub_title) from novel_unit_list group by version, source, ending;
+    -- 문피아 무료 완결작의 경우 가장 적었고 문피아 유료 완결작의 경우 가장 많음
 -----------------------------------------------------------------------------------------------
 
 -- 기준 값이 -0.3일 때 이하의 구매 변화율을 보이는 편당 데이터가 많은 순으로 정렬
@@ -70,3 +72,4 @@ group by version;
 select version, source, ending, count(sub_title) cnt from novel_unit_list
 where rate_change_purchase < -0.3 and unit_id > 26 and target = 'True'
 group by version, source, ending;
+    -- 문피아 무료 연재작이 가장 많았고 문피아 유료 연재작이 가장 적음
