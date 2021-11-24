@@ -9,7 +9,7 @@ import time
 import datetime
 
 # 기본 정보
-version_main = 3
+version_main = 4
 
 # 초기화
 url_free = "https://novel.munpia.com/page/novelous/group/nv.regular/gpage/"
