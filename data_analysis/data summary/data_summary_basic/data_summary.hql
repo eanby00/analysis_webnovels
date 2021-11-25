@@ -17,6 +17,16 @@ select count(id) from novel_list where version = 1 and source = '문피아_무�
 select version, source, ending, count(id) from novel_list group by version, source, ending;
     -- 문피아 무료 연재작의 작품 개수가 가장 많고 문피아 유료 연재작의 경우 가장 적었음
 
+-- table 생성
+drop table version_source_ending_count_novel_list;
+create table version_source_ending_count_novel_list as
+select version, source, ending, count(id) cnt from novel_list group by version, source, ending;
+
+select version, sum(cnt) cnt from version_source_ending_count_novel_list
+group by version;
+
+select * from version_source_ending_count_novel_list;
+
 ----------------------------------------------------------------------------------------------------------------
 
 -- version 1의 편당 데이터 총 개수: 1503410
@@ -37,6 +47,18 @@ select count(sub_title) from novel_unit_list where version = 1 and source = '문
 -- version, source, ending 별 데이터 개수
 select version, source, ending, count(sub_title) from novel_unit_list group by version, source, ending;
     -- 문피아 무료 완결작의 경우 가장 적었고 문피아 유료 완결작의 경우 가장 많음
+
+
+-- table 생성
+drop table version_source_ending_count_novel_unit_list;
+create table version_source_ending_count_novel_unit_list as
+select version, source, ending, count(sub_title) cnt from novel_unit_list group by version, source, ending;
+
+select version, sum(cnt) cnt from version_source_ending_count_novel_unit_list
+group by version;
+
+select * from version_source_ending_count_novel_unit_list;
+
 -----------------------------------------------------------------------------------------------
 
 -- 기준 값이 -0.1일 때 이하의 구매 변화율을 보이는 편당 데이터가 많은 순으로 정렬
@@ -55,7 +77,7 @@ where version = 1 and rate_change_purchase < -0.1 and unit_id > 26 and target = 
 group by version, book_id, source, ending) nu on n.id = nu.book_id and n.source = nu.source and n.version = nu.version and n.ending = nu.ending
 order by cnt_per_serial desc limit 30;
 
--- 기존 값에서의 편당 데이터와 데이터의 결합
+-- 기존 값에서의 편당 데이터와 데이터의 결합 - 의미 X로 사용 X
 select n.id, n.author, n.ending, n.source, n.title, n.favorite, (nu.cnt / n.favorite) as cnt_per_favorite, n.recommendation,
 (nu.cnt / n.recommendation) as cnt_per_recommendation, n.serial_time, nu.cnt, (nu.cnt / n.serial_time) as cnt_per_serial, n.link
 from novel_list n join (select version, book_id, source, ending, count(sub_title) cnt 
@@ -63,6 +85,20 @@ from novel_unit_list
 where version = 1 and rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
 group by version, book_id, source, ending) nu on n.id = nu.book_id and n.source = nu.source and n.version = nu.version and n.ending = nu.ending
 order by cnt_per_serial desc limit 30;
+
+-- table 생성
+drop table novel_reduction;
+create table novel_reduction as
+select n.version, n.id, n.author, n.ending, n.source, n.title, n.serial_time, nu.cnt, (nu.cnt / n.serial_time) as cnt_per_serial, n.link
+from novel_list n join (select version, book_id, source, ending, count(sub_title) cnt 
+from novel_unit_list
+where rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
+group by version, book_id, source, ending) nu on n.id = nu.book_id and n.source = nu.source and n.version = nu.version and n.ending = nu.ending;
+
+select version, author, ending, source, title, serial_time, cnt, link from novel_reduction order by cnt desc limit 30
+
+select version, author, ending, source, title, serial_time, cnt, cnt_per_serial, link from novel_reduction order by cnt_per_serial desc limit 30
+
 
 
 -------------------------------------------------------------------------------------------------------------
@@ -77,3 +113,14 @@ select version, source, ending, count(sub_title) cnt from novel_unit_list
 where rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
 group by version, source, ending;
     -- 문피아 무료 연재작이 가장 많았고 문피아 유료 연재작이 가장 적음
+
+-- table
+drop table novel_unit_cnt_reduction;
+create table novel_unit_cnt_reduction as
+select version, source, ending, count(sub_title) cnt from novel_unit_list
+where rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
+group by version, source, ending;
+
+select version, sum(cnt) cnt from novel_unit_cnt_reduction group by version;
+
+select * from novel_unit_cnt_reduction;

@@ -42,3 +42,27 @@ from novel_unit_list group by version, source, ending;
 select version, source, ending, max(recommendation) as max_value, min(recommendation) as min_value, avg(recommendation) as avg_value
 from novel_unit_list group by version, source, ending;
     -- 추천 수의 평균이 문피아 유료가 문피아 무료에 비해 압도적으로 높음
+
+-- table 생성
+drop table data_summary_basic;
+create table data_summary_basic as
+select version, source, ending,
+max(count_comment) as max_value_cnt, min(count_comment) as min_value_cnt, avg(count_comment) as avg_value_cnt,
+max(letter) as max_value_letter, min(letter) as min_value_letter, avg(letter) as avg_value_letter,
+max(purchase) as max_value_purchase, min(purchase) as min_value_purchase, avg(purchase) as avg_value_purchase,
+max(rate_change_purchase_five) as max_value_purchase_five, min(rate_change_purchase_five) as min_value_purchase_five, avg(rate_change_purchase_five) as avg_value_purchase_five,
+max(recommendation) as max_value_recommendation, min(recommendation) as min_value_recommendation, avg(recommendation) as avg_value_recommendation,
+max(rate_change_recommendation_five) as max_value_recommendation_five, min(rate_change_recommendation_five) as min_value_recommendation_five, avg(rate_change_recommendation_five) as avg_value_recommendation_five
+from novel_unit_list group by version, source, ending;
+
+select version, source, ending, max_value_cnt, min_value_cnt, avg_value_cnt from data_summary_basic;
+
+select version, source, ending, max_value_letter, min_value_letter, avg_value_letter from data_summary_basic;
+
+select version, source, ending, max_value_purchase, min_value_purchase, avg_value_purchase from data_summary_basic;
+
+select version, source, ending, max_value_purchase_five, min_value_purchase_five, avg_value_purchase_five from data_summary_basic;
+
+select version, source, ending, max_value_recommendation, min_value_recommendation, avg_value_recommendation from data_summary_basic;
+
+select version, source, ending, max_value_recommendation_five, min_value_recommendation_five, avg_value_recommendation_five from data_summary_basic;

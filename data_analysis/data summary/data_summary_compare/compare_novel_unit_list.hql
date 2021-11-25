@@ -190,7 +190,7 @@ group by '정상', version;
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- unit_novel_list의 recommendation	
-select '에러', version, source, ending, max(recommendation) as max_value, min(recommendation) as min_value, avg(recommendation) as avg_value
+select '에러' , version, source, ending, max(recommendation) as max_value, min(recommendation) as min_value, avg(recommendation) as avg_value
 from novel_unit_list
 where rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
 group by '에러', version, source, ending
@@ -216,3 +216,42 @@ group by '정상', version;
 -- 추천 수가 많다면 구매 감소율은 감소할 것이라 추측할 수 있음
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- table
+
+drop table compare_novel_unit;
+create table compare_novel_unit as
+select '에러' case_type, version, source, ending,
+max(count_comment) as max_value_cnt, min(count_comment) as min_value_cnt, avg(count_comment) as avg_value_cnt,
+max(letter) as max_value_letter, min(letter) as min_value_letter, avg(letter) as avg_value_letter,
+max(purchase) as max_value_purchase, min(purchase) as min_value_purchase, avg(purchase) as avg_value_purchase,
+max(rate_change_purchase_five) as max_value_purchase_five, min(rate_change_purchase_five) as min_value_purchase_five, avg(rate_change_purchase_five) as avg_value_purchase_five,
+max(recommendation) as max_value_recommendation, min(recommendation) as min_value_recommendation, avg(recommendation) as avg_value_recommendation,
+max(rate_change_recommendation_five) as max_value_recommendation_five, min(rate_change_recommendation_five) as min_value_recommendation_five, avg(rate_change_recommendation_five) as avg_value_recommendation_five
+from novel_unit_list
+where rate_change_purchase < -0.1 and unit_id > 26 and target = 'True'
+group by '에러', version, source, ending
+union
+select '정상' case_type, version, source, ending,
+max(count_comment) as max_value_cnt, min(count_comment) as min_value_cnt, avg(count_comment) as avg_value_cnt,
+max(letter) as max_value_letter, min(letter) as min_value_letter, avg(letter) as avg_value_letter,
+max(purchase) as max_value_purchase, min(purchase) as min_value_purchase, avg(purchase) as avg_value_purchase,
+max(rate_change_purchase_five) as max_value_purchase_five, min(rate_change_purchase_five) as min_value_purchase_five, avg(rate_change_purchase_five) as avg_value_purchase_five,
+max(recommendation) as max_value_recommendation, min(recommendation) as min_value_recommendation, avg(recommendation) as avg_value_recommendation,
+max(rate_change_recommendation_five) as max_value_recommendation_five, min(rate_change_recommendation_five) as min_value_recommendation_five, avg(rate_change_recommendation_five) as avg_value_recommendation_five
+from novel_unit_list
+where rate_change_purchase >= -0.1 and unit_id > 26 and target = 'True'
+group by '정상', version, source, ending;
+
+select case_type, version, source, ending, max_value_cnt, min_value_cnt, avg_value_cnt from compare_novel_unit;
+
+select case_type, version, source, ending, max_value_letter, min_value_letter, avg_value_letter from compare_novel_unit;
+
+select case_type, version, source, ending, max_value_purchase, min_value_purchase, avg_value_purchase from compare_novel_unit;
+
+select case_type, version, source, ending, max_value_purchase_five, min_value_purchase_five, avg_value_purchase_five from compare_novel_unit;
+
+select case_type, version, source, ending, max_value_recommendation, min_value_recommendation, avg_value_recommendation from compare_novel_unit;
+
+select case_type, version, source, ending, max_value_recommendation_five, min_value_recommendation_five, avg_value_recommendation_five from compare_novel_unit;
+

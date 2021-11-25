@@ -17,4 +17,6 @@
     - select * from novel_list where version = 2...;
     - select * from novel_unit_list where version = 2...;
     - 각 결과물을 preprocessing/novel_list or novel_unit_list 아래에 저장
+
+- 이후 data_summary/make_table.hql 실행
     

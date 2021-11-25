@@ -1,0 +1,19 @@
+data_summary
+    version_source_ending_count_novel_list
+    
+    version_source_ending_count_novel_unit_list
+
+    novel_most_30
+
+    novel_unit_cnt_reduction
+
+    novel_unit_cnt_reduction
+
+data_summary_check_standard
+    find_criteria
+
+data_summary_novel_unit_list
+    data_summary_basic
+
+compare_novel_unit_list
+    compare_novel_unit
