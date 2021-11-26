@@ -1,0 +1,9 @@
+기본적인 참고 source
+    3학년 1학기 전공과목 인공지능의 예제 코드
+        소제목에서 조사, 어미 등을 제거하기 위한 make_wordcloud.py의 twitter_tokenizer_filter 함수
+        WordCloud 사용 방법
+        
+
+추가적인 참고 source
+    판다스 데이터프레임 apply 사용
+        https://koreadatascientist.tistory.com/115
