@@ -22,9 +22,6 @@ drop table version_source_ending_count_novel_list;
 create table version_source_ending_count_novel_list as
 select version, source, ending, count(id) cnt from novel_list group by version, source, ending;
 
-select version, sum(cnt) cnt from version_source_ending_count_novel_list
-group by version;
-
 select * from version_source_ending_count_novel_list;
 
 ----------------------------------------------------------------------------------------------------------------
@@ -77,7 +74,7 @@ where version = 1 and rate_change_purchase < -0.1 and unit_id > 26 and target = 
 group by version, book_id, source, ending) nu on n.id = nu.book_id and n.source = nu.source and n.version = nu.version and n.ending = nu.ending
 order by cnt_per_serial desc limit 30;
 
--- 기존 값에서의 편당 데이터와 데이터의 결합 - 의미 X로 사용 X
+-- 기준 값에서의 편당 데이터와 데이터의 결합 - 의미 X로 사용 X
 select n.id, n.author, n.ending, n.source, n.title, n.favorite, (nu.cnt / n.favorite) as cnt_per_favorite, n.recommendation,
 (nu.cnt / n.recommendation) as cnt_per_recommendation, n.serial_time, nu.cnt, (nu.cnt / n.serial_time) as cnt_per_serial, n.link
 from novel_list n join (select version, book_id, source, ending, count(sub_title) cnt 

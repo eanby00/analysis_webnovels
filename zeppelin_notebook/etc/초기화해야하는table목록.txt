@@ -1,19 +1,23 @@
-data_summary
+data_analysis/data summary/data_summary_basic/data_summary.hql
     version_source_ending_count_novel_list
+    version별 수집처별 수집한 작품 개수 reload
     
     version_source_ending_count_novel_unit_list
+    version별 수집처별 수집한 편 개수 reload
 
-    novel_most_30
+    novel_reduction
+    오류 케이스가 많은 작품순 reload
+    연재 편수 대비 오류 케이스가 많은 작품순 reload
 
     novel_unit_cnt_reduction
+    version별 수집처별 오류 케이스의 개수 reload
 
-    novel_unit_cnt_reduction
-
-data_summary_check_standard
+data_analysis/data summary/data_summary_basic/data_summary_check_standard.hql
     find_criteria
+    감소율 기준 정하기 reload
 
-data_summary_novel_unit_list
+data_analysis/data summary/data_summary_basic/data_summary_novel_unit_list.hql
     data_summary_basic
 
-compare_novel_unit_list
+data_analysis/data summary/data_summary_compare/compare_novel_unit_list
     compare_novel_unit
