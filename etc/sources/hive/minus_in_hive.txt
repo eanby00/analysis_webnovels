@@ -1,0 +1,11 @@
+hive에는 minus가 존재하지 않음
+따라서 다른 연산으로 대체해야 함
+left join으로의 대체
+
+source: https://stackoverflow.com/questions/30760371/minus-query-in-hive
+
+SELECT x
+FROM abc
+LEFT JOIN bcd
+ON abc.x = bcd.x
+WHERE bcd.x IS NULL

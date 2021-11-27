@@ -34,17 +34,11 @@ sub_title_error["sub_title"] = sub_title_error["sub_title"].apply(twitter_tokeni
 
 ## WordCloud에 적용하기 위해 리스트와 빈도수를 구하여 dict으로 변환
 temp_error = dataframe_dict(sub_title_error)
-count_error = Counter(temp_error)
+count_error = Counter(temp_error).most_common(100)
 dict_error = dict(count_error)
 
-## WordCloud 생성
-word_cloud_error = WordCloud(font_path="./font/NanumGothic.ttf", background_color="white").generate_from_frequencies(dict_error)
-print(word_cloud_error.words_)
-
-## 생성한 것을 plt로 그리고 저장
-plt.figure(figsize= (16, 9))
-plt.imshow(word_cloud_error, interpolation="bilinear")
-plt.savefig("./img_wordcloud/wordcloud_error.png")
+unit_error = pd.DataFrame({"word": dict_error.keys(), "cnt": dict_error.values()})
+unit_error.to_csv("./temp_data/unit_error.csv", encoding="utf-8", index=None)
 
 # --------------------------------------------------------------------------------------
 # 정상 케이스의 wordcloud
@@ -57,14 +51,8 @@ sub_title_normal["sub_title"] = sub_title_normal["sub_title"].apply(twitter_toke
 
 ## WordCloud에 적용하기 위해 리스트와 빈도수를 구하여 dict으로 변환
 temp_normal = dataframe_dict(sub_title_normal)
-count_normal = Counter(temp_normal)
+count_normal = Counter(temp_normal).most_common(100)
 dict_normal = dict(count_normal)
 
-## WordCloud 생성
-word_cloud_normal = WordCloud(font_path="./font/NanumGothic.ttf", background_color="white").generate_from_frequencies(dict_normal)
-print(word_cloud_normal.words_)
-
-## 생성한 것을 plt로 그리고 저장
-plt.figure(figsize= (16, 9))
-plt.imshow(word_cloud_normal, interpolation="bilinear")
-plt.savefig("./img_wordcloud/wordcloud_normal.png")
+unit_normal = pd.DataFrame({"word": dict_normal.keys(), "cnt": dict_normal.values()})
+unit_normal.to_csv("./temp_data/unit_normal.csv", encoding="utf-8", index=None)
