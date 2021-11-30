@@ -40,6 +40,15 @@ dict_error = dict(count_error)
 unit_error = pd.DataFrame({"word": dict_error.keys(), "cnt": dict_error.values()})
 unit_error.to_csv("./temp_data/unit_error.csv", encoding="utf-8", index=None)
 
+## WordCloud 생성
+word_cloud = WordCloud(font_path="./font/NanumGothic.ttf", background_color="white").generate_from_frequencies(dict_error)
+print(word_cloud.words_)
+
+## 생성한 것을 plt로 그리고 저장
+plt.figure(figsize= (16, 9))
+plt.imshow(word_cloud, interpolation="bilinear")
+plt.savefig("./img_wordcloud/error.png")
+
 # --------------------------------------------------------------------------------------
 # 정상 케이스의 wordcloud
 
@@ -56,3 +65,12 @@ dict_normal = dict(count_normal)
 
 unit_normal = pd.DataFrame({"word": dict_normal.keys(), "cnt": dict_normal.values()})
 unit_normal.to_csv("./temp_data/unit_normal.csv", encoding="utf-8", index=None)
+
+## WordCloud 생성
+word_cloud = WordCloud(font_path="./font/NanumGothic.ttf", background_color="white").generate_from_frequencies(dict_normal)
+print(word_cloud.words_)
+
+## 생성한 것을 plt로 그리고 저장
+plt.figure(figsize= (16, 9))
+plt.imshow(word_cloud, interpolation="bilinear")
+plt.savefig("./img_wordcloud/normal.png")
